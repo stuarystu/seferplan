@@ -1,5 +1,6 @@
 import streamlit as st
 import csv
+import io
 from motor import planla
 
 st.set_page_config(page_title="Sefer Planlama", layout="centered")
@@ -10,7 +11,9 @@ st.write("CSV yükle → optimize et → indir")
 uploaded = st.file_uploader("CSV dosyası yükle", type="csv")
 
 if uploaded:
-    rows = list(csv.DictReader(uploaded, delimiter=";"))
+    text = io.TextIOWrapper(uploaded, encoding="ISO-8859-9")
+    rows = list(csv.DictReader(text, delimiter=";"))
+
     if st.button("Optimize Et"):
         tekci, normalci = planla(rows)
 
